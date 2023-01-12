@@ -4,7 +4,7 @@ const operations = require('../models/contacts');
 // Get all contacts -> [contacts]
 const getAll = async (req, res) => {
   const result = await operations.listContacts();
-  res.status(200).json({
+  res.json({
     status: 'success',
     code: 200,
     data: {
@@ -20,7 +20,7 @@ const getById = async (req, res, next) => {
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.status(200).json({
+  res.json({
     status: 'success',
     code: 200,
     data: {
@@ -49,7 +49,7 @@ const deleteContact = async (req, res, next) => {
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.status(200).json({
+  res.json({
     status: 'success',
     code: 200,
     message: 'contact deleted',
@@ -63,7 +63,7 @@ const updateContact = async (req, res, next) => {
   if (!result) {
     return next(createError(404, 'Not found'));
   }
-  res.status(200).json({
+  res.json({
     status: 'success',
     code: 200,
     message: 'contact updated',
