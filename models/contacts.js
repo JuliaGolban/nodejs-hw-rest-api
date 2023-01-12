@@ -44,16 +44,13 @@ const addContact = async body => {
 };
 
 const updateContact = async (contactId, body) => {
-  const { name, email, phone } = body;
   const contacts = await listContacts();
   const index = contacts.findIndex(contact => contact.id === contactId);
   if (index !== -1) {
     const contact = await getContactById(contactId);
     contacts[index] = {
       ...contact,
-      name: name || contact.name,
-      email: email || contact.email,
-      phone: phone || contact.phone,
+      ...body,
     };
     await fs.writeFile(contactsPath, JSON.stringify(contacts));
   }
