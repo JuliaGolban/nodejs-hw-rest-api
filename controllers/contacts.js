@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 const operations = require('../models/contacts');
 
-// Get all contacts -> /api/contacts
+// Get all contacts -> [contacts]
 const getAll = async (req, res) => {
   const result = await operations.listContacts();
   res.status(200).json({
@@ -13,7 +13,7 @@ const getAll = async (req, res) => {
   });
 };
 
-// Get contact by id -> /api/contacts/id
+// Get contact by id -> {contact with contactId}
 const getById = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await operations.getContactById(contactId);
@@ -29,7 +29,7 @@ const getById = async (req, res, next) => {
   });
 };
 
-// Add new contact -> /api/contacts with new contact
+// Add new contact -> [newContact, ...contacts]
 const addContact = async (req, res) => {
   const result = await operations.addContact(req.body);
   res.status(201).json({
@@ -42,7 +42,7 @@ const addContact = async (req, res) => {
   });
 };
 
-// Delete contact by id -> /api/contacts/id and then Get without this contact
+// Delete contact by id -> [contacts without this contact]
 const deleteContact = async (req, res, next) => {
   const { contactId } = req.params;
   const result = await operations.removeContact(contactId);
@@ -56,12 +56,9 @@ const deleteContact = async (req, res, next) => {
   });
 };
 
-// Update contact by id -> /api/contacts/id with updated contact
+// Update contact by id -> [contacts with updated contact]
 const updateContact = async (req, res, next) => {
   const { contactId } = req.params;
-  if (!req.body) {
-    return next(createError(400, 'Missing fields'));
-  }
   const result = await operations.updateContact(contactId, req.body);
   if (!result) {
     return next(createError(404, 'Not found'));
