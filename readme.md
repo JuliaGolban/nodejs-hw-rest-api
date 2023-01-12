@@ -11,11 +11,11 @@
 
 # Завдання
 
-- [hw02](/README.task_02.md)
-- [hw03](/README.task_03.md)
-- [hw04](/README.task_04.md)
-- [hw05](/README.task_05.md)
-- [hw06](/README.task_06.md)
+- [hw02](/assets/tasks/README.task_02.md)
+- [hw03](/assets/tasks/README.task_03.md)
+- [hw04](/assets/tasks/README.task_04.md)
+- [hw05](/assets/tasks/README.task_05.md)
+- [hw06](/assets/tasks/README.task_06.md)
 
 # Механізм здачі домашніх завдань
 
