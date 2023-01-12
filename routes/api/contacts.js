@@ -12,10 +12,18 @@ router.get('/', ctrl(contacts.getAll));
 router.get('/:contactId', ctrl(contacts.getById));
 
 // Add new contact -> /api/contacts with new contact
-router.post('/', validation(schema), ctrl(contacts.addContact));
+router.post(
+  '/',
+  validation(schema.schemaAddContact),
+  ctrl(contacts.addContact)
+);
 
 // Update contact by id -> /api/contacts/id with updated contact
-router.put('/:contactId', validation(schema), ctrl(contacts.updateContact));
+router.put(
+  '/:contactId',
+  validation(schema.schemaUpdateContact),
+  ctrl(contacts.updateContact)
+);
 
 // Delete contact by id -> /api/contacts/id and then Get without this contact
 router.delete('/:contactId', ctrl(contacts.deleteContact));
