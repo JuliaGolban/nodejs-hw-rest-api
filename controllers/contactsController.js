@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const service = require('../service/contacts');
+const service = require('../service/contactsService');
 
 // Get all contacts -> [contacts]
 const getAll = async (req, res) => {
@@ -59,6 +59,23 @@ const updateContact = async (req, res, next) => {
   });
 };
 
+// Update status of the contact by id -> [contacts with updated status of the contact]
+const updateStatusContact = async (req, res, next) => {
+  const { contactId } = req.params;
+  const result = await service.updateStatusContact(contactId, req.body);
+  if (!result) {
+    return next(createError(404, `Not found contact with id: ${contactId}`));
+  }
+  res.json({
+    status: 'success',
+    code: 200,
+    message: 'contact updated',
+    data: {
+      result,
+    },
+  });
+};
+
 // Delete contact by id -> [contacts without this contact]
 const deleteContact = async (req, res, next) => {
   const { contactId } = req.params;
@@ -78,5 +95,6 @@ module.exports = {
   getById,
   addContact,
   updateContact,
+  updateStatusContact,
   deleteContact,
 };

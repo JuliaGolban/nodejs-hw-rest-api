@@ -1,25 +1,30 @@
-const { Contact } = require('../models/contacts');
+const { Contact } = require('../models/contactsModel');
 
 // Get all contacts -> [contacts]
 const getAll = async () => {
-  return Contact.find({});
+  return Contact.find();
 };
 
 // Get contact by id -> {contact with contactId}
 const getById = async id => {
-  return Contact.findOne({ _id: id });
+  return Contact.findById({ _id: id });
 };
 
 // Add new contact -> [newContact, ...contacts]
-const addContact = async fields => {
-  return Contact.create(fields);
+const addContact = async body => {
+  return Contact.create(body);
 };
 
 // Update contact by id -> [contacts with updated contact]
-const updateContact = async (id, fields) => {
+const updateContact = async (id, body) => {
+  return Contact.findByIdAndUpdate({ _id: id }, body, { new: true });
+};
+
+// Update status of the contact by id -> [contacts with updated status of the contact]
+const updateStatusContact = async (id, body) => {
   return Contact.findByIdAndUpdate(
     { _id: id },
-    { $set: { fields } },
+    { $set: { favorite: body } },
     { new: true }
   );
 };
@@ -34,5 +39,6 @@ module.exports = {
   getById,
   addContact,
   updateContact,
+  updateStatusContact,
   deleteContact,
 };

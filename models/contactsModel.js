@@ -33,6 +33,7 @@ const schemaAddContact = Joi.object({
     })
     .required(),
   phone: Joi.string().min(6).required(),
+  favorite: Joi.boolean(),
 });
 
 const schemaUpdateContact = Joi.object({
@@ -42,6 +43,7 @@ const schemaUpdateContact = Joi.object({
     tlds: { allow: ['com', 'net', 'org'] },
   }),
   phone: Joi.string().min(6),
+  favorite: Joi.boolean(),
 });
 
 const schemas = { schemaAddContact, schemaUpdateContact };
