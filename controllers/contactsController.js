@@ -4,13 +4,7 @@ const service = require('../service/contactsService');
 // Get all contacts -> [contacts]
 const getAll = async (req, res) => {
   const result = await service.getAll();
-  res.json({
-    status: 'success',
-    code: 200,
-    data: {
-      result,
-    },
-  });
+  res.json(result);
 };
 
 // Get contact by id -> {contact with contactId}
@@ -20,26 +14,13 @@ const getById = async (req, res, next) => {
   if (!result) {
     return next(createError(404, `Not found contact with id: ${contactId}`));
   }
-  res.json({
-    status: 'success',
-    code: 200,
-    data: {
-      result,
-    },
-  });
+  res.json(result);
 };
 
 // Add new contact -> [newContact, ...contacts]
 const addContact = async (req, res) => {
   const result = await service.addContact(req.body);
-  res.status(201).json({
-    status: 'success',
-    code: 201,
-    message: 'contact added',
-    data: {
-      result,
-    },
-  });
+  res.status(201).json({ result });
 };
 
 // Update contact by id -> [contacts with updated contact]
@@ -49,14 +30,7 @@ const updateContact = async (req, res, next) => {
   if (!result) {
     return next(createError(404, `Not found contact with id: ${contactId}`));
   }
-  res.json({
-    status: 'success',
-    code: 200,
-    message: 'contact updated',
-    data: {
-      result,
-    },
-  });
+  res.json(result);
 };
 
 // Update status of the contact by id -> [contacts with updated status of the contact]
@@ -67,14 +41,7 @@ const updateStatusContact = async (req, res, next) => {
   if (!result) {
     return next(createError(404, `Not found contact with id: ${contactId}`));
   }
-  res.json({
-    status: 'success',
-    code: 200,
-    message: 'status updated',
-    data: {
-      result,
-    },
-  });
+  res.json(result);
 };
 
 // Delete contact by id -> [contacts without this contact]
@@ -85,8 +52,6 @@ const deleteContact = async (req, res, next) => {
     return next(createError(404, `Not found contact with id: ${contactId}`));
   }
   res.json({
-    status: 'success',
-    code: 200,
     message: 'contact deleted',
   });
 };
