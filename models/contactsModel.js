@@ -9,9 +9,10 @@ const schemaContact = new Schema(
       unique: [true, 'The name must be unique'],
       required: [true, 'Set name for contact'],
     },
-    email: { type: String },
+    email: { type: String, required: [true, 'Set email for contact'] },
     phone: {
       type: String,
+      required: [true, 'Set phone for contact'],
     },
     favorite: {
       type: Boolean,
