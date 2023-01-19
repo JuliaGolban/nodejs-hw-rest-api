@@ -20,7 +20,7 @@ const getById = async (req, res, next) => {
 // Add new contact -> [newContact, ...contacts]
 const addContact = async (req, res) => {
   const result = await service.addContact(req.body);
-  res.status(201).json({ result });
+  res.status(201).json(result);
 };
 
 // Update contact by id -> [contacts with updated contact]
