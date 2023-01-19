@@ -23,11 +23,7 @@ app.use((req, res) => {
 // error handler
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Internal Server Error' } = err;
-  res.status(status).json({
-    status: 'fail',
-    code: status,
-    message,
-  });
+  res.status(status).json({ message });
 });
 
 module.exports = app;
