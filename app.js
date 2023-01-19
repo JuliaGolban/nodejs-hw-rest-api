@@ -16,7 +16,7 @@ app.use(express.json());
 app.use('/api/contacts', contactsRouter);
 
 // catch 404 and forward to error handler
-app.use((_, res) => {
+app.use((req, res) => {
   res.status(404).json({
     status: 'error',
     code: 404,
@@ -25,7 +25,7 @@ app.use((_, res) => {
 });
 
 // error handler
-app.use((err, _, res, __) => {
+app.use((err, req, res, next) => {
   const { status = 500, message = 'Internal Server Error' } = err;
   res.status(status).json({
     status: 'fail',
