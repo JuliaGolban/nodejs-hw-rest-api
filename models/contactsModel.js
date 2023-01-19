@@ -21,7 +21,7 @@ const schemaContact = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-const Contact = model('Contact', schemaContact);
+const Contact = model('contact', schemaContact);
 
 // schemas
 const schemaAddContact = Joi.object({
@@ -46,6 +46,14 @@ const schemaUpdateContact = Joi.object({
   favorite: Joi.boolean(),
 });
 
-const schemas = { schemaAddContact, schemaUpdateContact };
+const schemaUpdateStatusContact = Joi.object({
+  favorite: Joi.boolean().required(),
+});
+
+const schemas = {
+  schemaAddContact,
+  schemaUpdateContact,
+  schemaUpdateStatusContact,
+};
 
 module.exports = { Contact, schemas };

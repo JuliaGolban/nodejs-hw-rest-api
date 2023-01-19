@@ -62,14 +62,15 @@ const updateContact = async (req, res, next) => {
 // Update status of the contact by id -> [contacts with updated status of the contact]
 const updateStatusContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await service.updateStatusContact(contactId, req.body);
+  const { favorite } = req.body;
+  const result = await service.updateStatusContact(contactId, favorite);
   if (!result) {
     return next(createError(404, `Not found contact with id: ${contactId}`));
   }
   res.json({
     status: 'success',
     code: 200,
-    message: 'contact updated',
+    message: 'status updated',
     data: {
       result,
     },

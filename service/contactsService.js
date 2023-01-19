@@ -1,26 +1,26 @@
 const { Contact } = require('../models/contactsModel');
 
-// Get all contacts -> [contacts]
+// GET @ /contacts
 const getAll = async () => {
   return Contact.find();
 };
 
-// Get contact by id -> {contact with contactId}
+// GET @ /contacts/:contactId
 const getById = async id => {
   return Contact.findById({ _id: id });
 };
 
-// Add new contact -> [newContact, ...contacts]
+// POST @ /contacts
 const addContact = async body => {
   return Contact.create(body);
 };
 
-// Update contact by id -> [contacts with updated contact]
+// PUT @ /contacts/:contactId
 const updateContact = async (id, body) => {
   return Contact.findByIdAndUpdate({ _id: id }, body, { new: true });
 };
 
-// Update status of the contact by id -> [contacts with updated status of the contact]
+// PATCH @ /contacts/:contactId/favorite
 const updateStatusContact = async (id, body) => {
   return Contact.findByIdAndUpdate(
     { _id: id },
@@ -29,7 +29,7 @@ const updateStatusContact = async (id, body) => {
   );
 };
 
-// Delete contact by id -> [contacts without this contact]
+// DELETE @ /contacts/:contactId
 const deleteContact = async id => {
   return Contact.findByIdAndRemove({ _id: id });
 };

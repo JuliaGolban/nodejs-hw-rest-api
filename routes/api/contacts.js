@@ -6,7 +6,7 @@ const {
   validateID,
   ctrlWrapper: ctrl,
 } = require('../../middlewares');
-const { schemas } = require('../../models/contacts');
+const { schemas } = require('../../models/contactsModel');
 const { ctrlContacts } = require('../../controllers');
 
 // Get all contacts -> /api/contacts
@@ -34,7 +34,7 @@ router.put(
 router.patch(
   '/:contactId/favorite',
   validateID,
-  validation(schemas.schemaUpdateContact),
+  validation(schemas.schemaUpdateStatusContact),
   ctrl(ctrlContacts.updateStatusContact)
 );
 
