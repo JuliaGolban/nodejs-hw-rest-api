@@ -17,11 +17,7 @@ app.use('/api/contacts', contactsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res) => {
-  res.status(404).json({
-    status: 'error',
-    code: 404,
-    message: 'Not found',
-  });
+  res.status(404).json({ message: 'Not found' });
 });
 
 // error handler
