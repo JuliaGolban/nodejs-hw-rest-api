@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 const Joi = require('joi');
 
 // shema of a user model
@@ -16,6 +17,7 @@ const schemaUser = new Schema(
     password: {
       type: String,
       required: [true, 'Password is required'],
+      minlength: 7,
     },
     subscription: {
       type: String,
@@ -26,17 +28,20 @@ const schemaUser = new Schema(
       type: String,
       default: null,
     },
-    // owner: {
-    //     type: SchemaTypes.ObjectId,
-    //   ref: 'user',
-    // },
   },
   { versionKey: false, timestamps: true }
 );
 
+// to hash a user password
+schemaUser.pre('save', async function () {
+  if (this.isNew) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+});
+
 const User = model('user', schemaUser);
 
-// schemas
+// schemas Joi
 const schemaRegister = Joi.object({
   username: Joi.string().min(3).max(30).required(),
   email: Joi.string()

@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {
-  validation,
-  ctrlWrapper: ctrl,
-  authToken,
-} = require('../../middlewares');
+const { validation, ctrlWrapper: ctrl, auth } = require('../../middlewares');
 const { schemas } = require('../../models/usersModel');
 const { ctrlUsers } = require('../../controllers');
 
@@ -20,9 +16,9 @@ router.post(
 router.post('/login', validation(schemas.schemaLogin), ctrl(ctrlUsers.login));
 
 // GET @ /users/logout -> logout
-router.get('/logout', authToken, ctrl(ctrlUsers.logout));
+router.get('/logout', auth, ctrl(ctrlUsers.logout));
 
 // GET @ /users/current -> authenticate the current user
-router.get('/current', authToken, ctrl(ctrlUsers.getUser));
+router.get('/current', auth, ctrl(ctrlUsers.getUser));
 
 module.exports = router;
