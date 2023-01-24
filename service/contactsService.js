@@ -1,13 +1,16 @@
 const { Contact } = require('../models/contactsModel');
 
 // GET @ /contacts
-const getAll = async () => {
-  return Contact.find();
+const getAll = async userId => {
+  return Contact.find({ owner: userId }).populate(
+    'owner',
+    '_id username email subscription'
+  );
 };
 
 // GET @ /contacts/:contactId
-const getById = async id => {
-  return Contact.findById({ _id: id });
+const getById = async (contactId, userId) => {
+  return Contact.findById({ _id: contactId, owner: userId });
 };
 
 // POST @ /contacts
@@ -16,22 +19,24 @@ const addContact = async body => {
 };
 
 // PUT @ /contacts/:contactId
-const updateContact = async (id, body) => {
-  return Contact.findByIdAndUpdate({ _id: id }, body, { new: true });
+const updateContact = async ({ contactId, _id, ...body }) => {
+  return Contact.findOneAndUpdate({ _id: contactId, owner: _id }, body, {
+    new: true,
+  });
 };
 
 // PATCH @ /contacts/:contactId/favorite
-const updateStatusContact = async (id, body) => {
+const updateStatusContact = async (contactId, userId, body) => {
   return Contact.findByIdAndUpdate(
-    { _id: id },
+    { _id: contactId, owner: userId },
     { $set: { favorite: body } },
     { new: true }
   );
 };
 
 // DELETE @ /contacts/:contactId
-const deleteContact = async id => {
-  return Contact.findByIdAndRemove({ _id: id });
+const deleteContact = async (contactId, userId) => {
+  return Contact.findByIdAndRemove({ _id: contactId, owner: userId });
 };
 
 module.exports = {
