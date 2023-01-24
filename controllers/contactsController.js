@@ -4,7 +4,8 @@ const service = require('../service/contactsService');
 // Get all contacts -> [contacts]
 const getAll = async (req, res) => {
   const { _id } = req.user;
-  const result = await service.getAll(_id);
+  const { page = 1, limit = 20 } = req.query;
+  const result = await service.getAll(_id, page, limit);
   res.json(result);
 };
 
