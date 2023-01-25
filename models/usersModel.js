@@ -64,9 +64,15 @@ const schemaLogin = Joi.object({
   password: Joi.string().min(7).required(),
 });
 
+const schemaUpdate = Joi.object({
+  username: Joi.string().min(3).max(30),
+  subscription: Joi.string().valid('starter', 'pro', 'business'),
+});
+
 const schemas = {
   schemaRegister,
   schemaLogin,
+  schemaUpdate,
 };
 
 module.exports = { User, schemas };

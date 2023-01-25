@@ -21,4 +21,12 @@ router.get('/logout', auth, ctrl(ctrlUsers.logout));
 // GET @ /users/current -> authenticate the current user
 router.get('/current', auth, ctrl(ctrlUsers.getUser));
 
+// PATCH @ /users -> update the current user's subscription
+router.patch(
+  '/',
+  validation(schemas.schemaUpdate),
+  auth,
+  ctrl(ctrlUsers.updateUser)
+);
+
 module.exports = router;

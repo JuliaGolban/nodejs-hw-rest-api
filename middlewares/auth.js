@@ -1,5 +1,4 @@
 const { Unauthorized } = require('http-errors');
-// const service = require('../service/authService');
 const jwt = require('jsonwebtoken');
 
 require('dotenv').config();
@@ -17,12 +16,11 @@ const auth = async (req, res, next) => {
       return next(new Unauthorized('Not authorized'));
     }
     // Extract user id and find user by id
-    // const user = await service.authUser(token);
     const payload = jwt.verify(token, SECRET_KEY);
     const { id } = payload;
     const user = await User.findById(id);
     // Authenticate the current user
-    if (!user) {
+    if (!user || !user.token) {
       return next(new Unauthorized('Not authorized'));
     }
     // save user to request

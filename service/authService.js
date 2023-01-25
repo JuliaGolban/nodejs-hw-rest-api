@@ -39,17 +39,15 @@ const logout = async id => {
   return User.findByIdAndUpdate({ _id: id }, { token: null });
 };
 
-// Authenticate the current user -> /users/current
-const authUser = async token => {
-  const payload = jwt.verify(token, SECRET_KEY);
-  const { id } = payload;
-  const user = await User.findById(id);
-  return user.token !== token ? null : user;
+// Update the current user's subscription
+const updateUser = async (id, body) => {
+  // const { subscription } = body;
+  // return User.findByIdAndUpdate({ _id: id }, { subscription: subscription });
+  return User.findByIdAndUpdate({ _id: id }, body);
 };
-
 module.exports = {
   signup,
   login,
   logout,
-  authUser,
+  updateUser,
 };
