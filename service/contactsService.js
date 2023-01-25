@@ -10,12 +10,16 @@ const getAll = async (userId, query) => {
     return Contact.find({ owner: userId, favorite: favorite }, '', {
       skip,
       limit: +limit,
-    }).populate('owner', '_id username email subscription');
+    })
+      .sort({ name: 1 })
+      .populate('owner', '_id username email subscription');
 
   return Contact.find({ owner: userId }, '', {
     skip,
     limit: +limit,
-  }).populate('owner', '_id username email subscription');
+  })
+    .sort({ name: 1 })
+    .populate('owner', '_id username email subscription');
 };
 
 // GET @ /contacts/:contactId
