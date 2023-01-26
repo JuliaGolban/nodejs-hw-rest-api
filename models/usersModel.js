@@ -24,6 +24,7 @@ const schemaUser = new Schema(
       enum: ['starter', 'pro', 'business'],
       default: 'starter',
     },
+    avatarURL: String,
     token: {
       type: String,
       default: null,
@@ -52,6 +53,7 @@ const schemaRegister = Joi.object({
     .required(),
   password: Joi.string().min(7).required(),
   subscription: Joi.string(),
+  avatarURL: Joi.string(),
 });
 
 const schemaLogin = Joi.object({

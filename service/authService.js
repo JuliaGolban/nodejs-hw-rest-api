@@ -39,15 +39,8 @@ const logout = async id => {
   return User.findByIdAndUpdate({ _id: id }, { token: null });
 };
 
-// Update the current user's subscription
-const updateUser = async (id, body) => {
-  // const { subscription } = body;
-  // return User.findByIdAndUpdate({ _id: id }, { subscription: subscription });
-  return User.findByIdAndUpdate({ _id: id }, body);
-};
 module.exports = {
   signup,
   login,
   logout,
-  updateUser,
 };
