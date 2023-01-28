@@ -3,15 +3,14 @@ const service = require('../service/authService');
 // Registration
 const signup = async (req, res) => {
   const user = await service.signup(req.body);
-  const { username, email, subscription } = user;
-  res.status(201).json({ user: { username, email, subscription } });
+  const { username, email, subscription, avatarURL } = user;
+  res.status(201).json({ user: { username, email, subscription, avatarURL } });
 };
 
 // Login
 const login = async (req, res) => {
   const { token, userWithToken } = await service.login(req.body);
-  const { username, email, subscription } = userWithToken;
-  res.json({ token: token, user: { username, email, subscription } });
+  res.json({ token: token, user: userWithToken });
 };
 
 // Logout

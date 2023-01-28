@@ -30,7 +30,9 @@ const login = async body => {
   }
   const payload = { id: user._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
-  const userWithToken = await User.findByIdAndUpdate(user._id, { token });
+  const userWithToken = await User.findByIdAndUpdate(user._id, {
+    token,
+  }).select({ username: 1, email: 1, subscription: 1, avatarURL: 1, _id: 0 });
   return { token, userWithToken };
 };
 

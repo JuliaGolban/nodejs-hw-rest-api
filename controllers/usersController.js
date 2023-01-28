@@ -1,4 +1,5 @@
 const service = require('../service/usersService');
+const files = require('../service/filesService');
 
 // Get the current user by token
 const getUser = async (req, res) => {
@@ -6,11 +7,17 @@ const getUser = async (req, res) => {
   res.json({ user: { username, email, subscription, createdAt, updatedAt } });
 };
 
-// Update the current user's subscription
+// Update the current user
 const updateUser = async (req, res) => {
   const user = await service.updateUser(req.user._id, req.body);
-  const { username, email, subscription } = user;
-  res.json({ user: { username, email, subscription } });
+  res.json({ user: user });
 };
 
-module.exports = { getUser, updateUser };
+// Update the current user
+const updateAvatar = async (req, res) => {
+  const avatarURL = await files.updateFile('avatars', req.file);
+  await service.updateUser(req.user._id, { avatarURL });
+  res.json({ avatarURL });
+};
+
+module.exports = { getUser, updateUser, updateAvatar };

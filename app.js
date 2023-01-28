@@ -12,8 +12,8 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(logger(formatsLogger));
 app.use(cors());
-// parse application/json
 app.use(express.json());
+app.use(express.static('/public'));
 
 // routers
 app.use('/api/users', authRouter);
