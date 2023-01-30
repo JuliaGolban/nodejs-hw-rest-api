@@ -49,27 +49,26 @@ schemaUser.pre('save', async function () {
 const User = model('user', schemaUser);
 
 // schemas Joi
-const schemaRegister = Joi.object({
-  username: Joi.string().min(3).max(30).required(),
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'org'] },
-    })
-    .required(),
-  password: Joi.string().min(7).required(),
-  subscription: Joi.string(),
+const schemaBase = Joi.object().keys({
+  username: Joi.string().min(3).max(30),
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ['com', 'net', 'org'] },
+  }),
+  password: Joi.string().min(7),
+  subscription: Joi.string().valid('starter', 'pro', 'business'),
   avatarURL: Joi.string(),
 });
 
-const schemaLogin = Joi.object({
-  email: Joi.string()
-    .email({
-      minDomainSegments: 2,
-      tlds: { allow: ['com', 'net', 'org'] },
-    })
-    .required(),
-  password: Joi.string().min(7).required(),
+const schemaRegister = schemaBase.keys({
+  username: Joi.required(),
+  email: Joi.required(),
+  password: Joi.required(),
+});
+
+const schemaLogin = schemaBase.keys({
+  email: Joi.required(),
+  password: Joi.required(),
 });
 
 const schemaUpdate = Joi.object({

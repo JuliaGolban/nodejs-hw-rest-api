@@ -3,8 +3,11 @@ const files = require('../service/filesService');
 
 // Get the current user by token
 const getUser = async (req, res) => {
-  const { username, email, subscription, createdAt, updatedAt } = req.user;
-  res.json({ user: { username, email, subscription, createdAt, updatedAt } });
+  const { username, email, subscription, avatarURL, createdAt, updatedAt } =
+    req.user;
+  res.json({
+    user: { username, email, subscription, avatarURL, createdAt, updatedAt },
+  });
 };
 
 // Update the current user

@@ -2,7 +2,7 @@ const { User } = require('../models/usersModel');
 
 // Update the current user
 const updateUser = async (id, body) => {
-  return User.findByIdAndUpdate({ _id: id }, body).select({
+  return User.findByIdAndUpdate({ _id: id }, body, { new: true }).select({
     _id: 0,
     password: 0,
     token: 0,

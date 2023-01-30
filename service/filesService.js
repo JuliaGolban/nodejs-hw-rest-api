@@ -27,7 +27,7 @@ const updateFile = async (fieldname, file) => {
 const resizeFile = async path => {
   await jimp.read(path, (err, image) => {
     if (err) throw err;
-    image.resize(250, 250).write(path);
+    image.resize(250, 250).writeAsync(path);
   });
 };
 
