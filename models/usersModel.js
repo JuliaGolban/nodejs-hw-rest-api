@@ -1,10 +1,14 @@
 const { Schema, model } = require('mongoose');
-const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
 
+require('dotenv').config();
+const { SECRET_KEY } = process.env;
+
 // shema of a user model
-const schemaUser = new Schema(
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -39,14 +43,29 @@ const schemaUser = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// to hash a user password
-schemaUser.pre('save', async function () {
+// hash a user's password before saving
+userSchema.pre('save', async function () {
   if (this.isNew) {
     this.password = await bcrypt.hash(this.password, 10);
   }
 });
 
-const User = model('user', schemaUser);
+// validation the password
+userSchema.methods.validPassword = async function (password) {
+  const isValidPassword = await bcrypt.compare(password, this.password);
+  await this.save();
+  return isValidPassword;
+};
+
+// generate token
+userSchema.methods.generateAuthToken = async function () {
+  const payload = { id: this._id };
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+  await this.save();
+  return token;
+};
+
+const User = model('user', userSchema);
 
 // schemas Joi
 const schemaBase = Joi.object().keys({

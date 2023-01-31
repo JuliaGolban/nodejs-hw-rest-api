@@ -3,8 +3,14 @@ const service = require('../service/authService');
 // Registration
 const signup = async (req, res) => {
   const user = await service.signup(req.body);
-  const { username, email, subscription, avatarURL } = user;
-  res.status(201).json({ user: { username, email, subscription, avatarURL } });
+  res.status(201).json({
+    user: {
+      username: user.username,
+      email: user.email,
+      subscription: user.subscription,
+      avatarURL: user.avatarURL,
+    },
+  });
 };
 
 // Login

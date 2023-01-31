@@ -1,10 +1,4 @@
 const { Unauthorized } = require('http-errors');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-require('dotenv').config();
-const { SECRET_KEY } = process.env;
-
 const { User } = require('../models/usersModel');
 
 // Registration new user -> /users/signup
@@ -24,12 +18,13 @@ const login = async body => {
   if (!user) {
     throw new Unauthorized(`User with email '${email}' not found`);
   }
-  const isValidPassword = await bcrypt.compare(password, user.password);
+
+  const isValidPassword = await user.validPassword(password);
   if (!isValidPassword) {
     throw new Unauthorized('Password is wrong');
   }
-  const payload = { id: user._id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1d' });
+
+  const token = await user.generateAuthToken();
   const userWithToken = await User.findByIdAndUpdate(user._id, {
     token,
   }).select({ username: 1, email: 1, subscription: 1, avatarURL: 1, _id: 0 });
