@@ -13,21 +13,23 @@ describe('Auth Controller', () => {
   let server;
 
   beforeAll(() => {
-    // jest.setTimeout(150 * 1000);
+    jest.setTimeout(150 * 1000);
     server = app.listen(PORT);
   });
 
   afterAll(() => {
-    // jest.setTimeout(5 * 1000);
+    jest.setTimeout(5 * 1000);
     server.close();
   });
 
   beforeEach(done => {
+    // jest.setTimeout(150 * 1000);
     mongoose.set('strictQuery', false);
     mongoose.connect(DB_TEST_HOST).then(() => done());
   });
 
   afterEach(done => {
+    // jest.setTimeout(5 * 1000);
     mongoose.disconnect(DB_TEST_HOST).then(() => done());
   });
 
@@ -40,6 +42,7 @@ describe('Auth Controller', () => {
     password: 'password',
     token: jwt.sign({ _id: userId }, SECRET_KEY),
   };
+
   beforeEach(async () => {
     await User.deleteMany();
     const user = new User(mUser);
@@ -104,8 +107,8 @@ describe('Auth Controller', () => {
       expect(avatarURL).toBeDefined();
       expect(token).not.toBeNull();
 
-      const loginedUser = await User.findOne({ email: email });
-      expect(loginedUser.password).toBeDefined();
+      const loggedUser = await User.findOne({ email: email });
+      expect(loggedUser.password).toBeDefined();
     });
 
     it('should throw an error if the user does not exist', async () => {
@@ -120,9 +123,18 @@ describe('Auth Controller', () => {
 
   describe('log-out process', () => {
     it('should logout already login user', async () => {
+      const loggedUser = {
+        email: mUser.email,
+        password: mUser.password,
+      };
+      const result = await request(app)
+        .post('/api/users/login')
+        .send(loggedUser)
+        .expect(200);
+
       await request(app)
-        .post('/api/users/logout')
-        .set('Authorization', `Bearer ${mUser.token}`)
+        .get('/api/users/logout')
+        .set('Authorization', `Bearer ${result.body.token}`)
         .expect(204);
     });
 
