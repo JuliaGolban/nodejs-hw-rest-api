@@ -2,8 +2,9 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 
-const usersRouter = require('./routes/api/auth');
-const contactsRouter = require('./routes/api/contacts');
+const authRouter = require('./routes/api/authRouter');
+const usersRouter = require('./routes/api/usersRouter');
+const contactsRouter = require('./routes/api/contactsRouter');
 
 const app = express();
 
@@ -11,10 +12,11 @@ const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
 app.use(logger(formatsLogger));
 app.use(cors());
-// parse application/json
 app.use(express.json());
+app.use(express.static('public'));
 
 // routers
+app.use('/api/users', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/contacts', contactsRouter);
 
