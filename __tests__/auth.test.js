@@ -12,24 +12,22 @@ const { User } = require('../models/usersModel');
 describe('Auth Controller', () => {
   let server;
 
-  beforeAll(() => {
-    jest.setTimeout(150 * 1000);
+  beforeAll(async () => {
+    await jest.setTimeout(150 * 1000);
     server = app.listen(PORT);
   });
 
-  afterAll(() => {
-    jest.setTimeout(5 * 1000);
+  afterAll(async () => {
+    await jest.setTimeout(5 * 1000);
     server.close();
   });
 
   beforeEach(done => {
-    // jest.setTimeout(150 * 1000);
     mongoose.set('strictQuery', false);
     mongoose.connect(DB_TEST_HOST).then(() => done());
   });
 
   afterEach(done => {
-    // jest.setTimeout(5 * 1000);
     mongoose.disconnect(DB_TEST_HOST).then(() => done());
   });
 
