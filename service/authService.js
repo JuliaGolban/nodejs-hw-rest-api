@@ -55,9 +55,6 @@ const confirm = async code => {
 
 // Resend the user's confirmation email -> /users/verify
 const resend = async email => {
-  if (!email) {
-    throw new BadRequest('Missing required field email');
-  }
   const user = await User.findOne({ email: email });
   if (!user) {
     throw new NotFound(`User not found`);

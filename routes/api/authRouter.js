@@ -22,6 +22,10 @@ router.get('/logout', auth, ctrl(ctrlAuth.logout));
 router.get('/verify/:verificationToken', ctrl(ctrlAuth.confirm));
 
 // POST @ /users/verify -> resend the user's confirmation email
-router.post('/verify', ctrl(ctrlAuth.resend));
+router.post(
+  '/verify',
+  validation(schemas.schemaVerification),
+  ctrl(ctrlAuth.resend)
+);
 
 module.exports = router;
