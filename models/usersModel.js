@@ -93,6 +93,12 @@ const schemaRegister = schemaBase.keys({
   password: Joi.required(),
 });
 
+const schemaVerification = schemaBase.keys({
+  email: Joi.required().messages({
+    'any.required': `Missing required field email`,
+  }),
+});
+
 const schemaLogin = schemaBase.keys({
   email: Joi.required(),
   password: Joi.required(),
@@ -105,6 +111,7 @@ const schemaUpdate = Joi.object({
 
 const schemas = {
   schemaRegister,
+  schemaVerification,
   schemaLogin,
   schemaUpdate,
 };
