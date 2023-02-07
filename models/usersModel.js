@@ -52,11 +52,18 @@ const userSchema = new Schema(
 );
 
 // hash a user's password before saving
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.password = await bcrypt.hash(this.password, 10);
   }
+  next();
 });
+
+userSchema.methods.hashPassword = async function (password) {
+  const hashPassword = await bcrypt.hash(password, 10);
+  await this.save();
+  return hashPassword;
+};
 
 // validation the password
 userSchema.methods.validPassword = async function (password) {
@@ -109,11 +116,16 @@ const schemaUpdate = Joi.object({
   subscription: Joi.string().valid('starter', 'pro', 'business'),
 });
 
+const schemaChangePassword = schemaBase.keys({
+  password: Joi.required(),
+});
+
 const schemas = {
   schemaRegister,
   schemaVerification,
   schemaLogin,
   schemaUpdate,
+  schemaChangePassword,
 };
 
 module.exports = { User, schemas };

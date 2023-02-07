@@ -1,5 +1,5 @@
 const service = require('../service/usersService');
-const files = require('../service/filesService');
+const files = require('../helpers/updateFiles');
 
 // Get the current user by token
 const getUser = async (req, res) => {
