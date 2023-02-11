@@ -39,16 +39,31 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
   { versionKey: false, timestamps: true }
 );
 
 // hash a user's password before saving
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.password = await bcrypt.hash(this.password, 10);
   }
+  next();
 });
+
+userSchema.methods.hashPassword = async function (password) {
+  const hashPassword = await bcrypt.hash(password, 10);
+  await this.save();
+  return hashPassword;
+};
 
 // validation the password
 userSchema.methods.validPassword = async function (password) {
@@ -85,6 +100,12 @@ const schemaRegister = schemaBase.keys({
   password: Joi.required(),
 });
 
+const schemaVerification = schemaBase.keys({
+  email: Joi.required().messages({
+    'any.required': `Missing required field email`,
+  }),
+});
+
 const schemaLogin = schemaBase.keys({
   email: Joi.required(),
   password: Joi.required(),
@@ -95,10 +116,16 @@ const schemaUpdate = Joi.object({
   subscription: Joi.string().valid('starter', 'pro', 'business'),
 });
 
+const schemaChangePassword = schemaBase.keys({
+  password: Joi.required(),
+});
+
 const schemas = {
   schemaRegister,
+  schemaVerification,
   schemaLogin,
   schemaUpdate,
+  schemaChangePassword,
 };
 
 module.exports = { User, schemas };
